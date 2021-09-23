@@ -1,0 +1,34 @@
+<%- include('./include/header.ejs')%>
+    <% if(flag==true){ %>
+        <div style="max-width: 100%;">
+            <div class="card text-dark bg-warning mb-3" style="max-width: 22em;position: absolute;text-align: center;">
+                <div class="card-header">OOPS!</div>
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <%= domain%> is unavailable
+                    </h5>
+                    <p class="card-text">
+                        Please try using a different domain name.
+                    </p>
+                </div>
+            </div>
+            <%- include('./include/form.ejs')%>
+        </div>
+        <% } %>
+
+
+            <% if(flag==false){ %>
+                <div class="alert alert-success" style="position: absolute;text-align: center;width:66%;left:17%;" role="alert">
+                    <h4 class="alert-heading">Congratultions!</h4>
+                    <p>
+                        <%= domain%> is available
+                    </p>
+                    <hr>
+                    <p class="mb-0">
+                        <b style="color:rgb(66, 66, 49)">Ksh 1,500/yr</b>
+                        <button type="button" class="btn btn-warning" style="border-radius:20px;padding:5px">Add to <i class=" fa fa-cart-arrow-down " aria-hidden="true "></i></button>
+                    </p>
+                </div>
+                <%- include('./include/form.ejs')%>
+                    <% } %>
+                        <%- include('./include/footer.ejs')%>

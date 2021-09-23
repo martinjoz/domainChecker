@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <title>Hello, world!</title>
+  </head>
+  <body>
+    <h1>Hello, world!</h1>
+
+    <!-- Optional JavaScript; choose one of the two! -->
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    <!--
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+    -->
+  </body>
+</html>
+
+
+server
+const express= require('express');
+const app=express();
+const moment=require('moment');
+const bodyParser=require('body-parser');
+const whois=require('whois-json');
+const isValid=require('is-valid-domain');
+const path=require('path');
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended:true}));
+app.set("view engine","ejs");
+
+
+//LOAD ASSETS
+app.use("/css",express.static(path.resolve(__dirname,"./assets/css")));
+
+
+app.get('/',(req,res)=>{
+    res.render('domain');
+});
+
+app.post('/verify',async (req,res)=>{
+    var domain=req.body.domain;
+    
+    if(isValid(domain)){
+        console.log(domain);
+        var results=await whois(domain);
+        res.send({data: results.domainName})
+    }else{
+        res.send("Please Enter a valid domain");
+    }
+
+})
+
+app.listen(3001,()=>{
+    console.log("Server running on port 3001")
+});
+
+
+
+domain
+<%- include('./include/header.ejs') %>
+    <%- include('./include/form.ejs') %>
+        <%- include('./include/footer.ejs') %>
+
+
+
+
+
+server Earlier
+const express= require('express');
+const app=express();
+const moment=require('moment');
+const bodyParser=require('body-parser');
+const whois=require('whois-json');
+const isValid=require('is-valid-domain');
+
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended:true}));
+app.set("view engine","ejs");
+
+
+
+app.get('/',(req,res)=>{
+    res.render('domain');
+});
+
+app.post('/domainInfo',async (req,res)=>{
+    var domain=req.body.domain;
+    
+
+    if(isValid(domain)){
+        console.log(domain);
+        var results=await whois(domain);
+        res.send({data: results.domainName})
+    }else{
+        res.send("Please Enter a valid domain");
+    }
+
+})
+
+app.listen(3001,()=>{
+    console.log("Server running on port 3001")
+});
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <form action="/domainInfo" method="post">
+        <label for="">Domain</label>
+        <input type="text" name="domain" id=""> <input type="submit" value="Submit">
+    </form>
+
+</body>
+
+</html>
